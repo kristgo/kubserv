@@ -2,10 +2,6 @@
 
 make push
 
-kubectl apply -f ingress.yml
-
-make
-
 minikube start
 
 minikube addons enable ingress
