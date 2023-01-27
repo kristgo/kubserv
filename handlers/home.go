@@ -6,7 +6,6 @@ import (
 	"net/http"
 )
 
-// home returns a simple HTTP handler function which writes a response.
 func home(buildTime, commit, release string) http.HandlerFunc {
 	return func(w http.ResponseWriter, _ *http.Request) {
 		info := struct {

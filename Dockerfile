@@ -4,6 +4,6 @@ ENV PORT 8000
 
 EXPOSE $PORT
 
-COPY advent /
+COPY krist /
 
-CMD ["/advent"]
+CMD ["/krist"]

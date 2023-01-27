@@ -11,7 +11,6 @@ import (
 	"syscall"
 )
 
-// How to try it: PORT=8000 go run main.go
 func main() {
 	log.Printf(
 		"Starting the service...\ncommit: %s, build time: %s, release: %s",
@@ -40,14 +39,14 @@ func main() {
 	killSignal := <-interrupt
 	switch killSignal {
 	case os.Kill:
-		log.Print("Got SIGKILL...")
+		log.Print("Got SIGKILL")
 	case os.Interrupt:
-		log.Print("Got SIGINT...")
+		log.Print("Got SIGINT")
 	case syscall.SIGTERM:
-		log.Print("Got SIGTERM...")
+		log.Print("Got SIGTERM")
 	}
 
-	log.Print("The service is shutting down...")
+	log.Print("The service is shutting down")
 	srv.Shutdown(context.Background())
 	log.Print("Done")
 }
