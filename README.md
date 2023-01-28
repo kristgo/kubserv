@@ -8,15 +8,9 @@ minikube addons enable ingress
 
 kubectl config use-context minikube
 
-kubectl get namespaces
+kubectl get deployment
 
-kubectl get pods --all-namespaces
-
-kubectl get logs -f <pod_name>
-
-kubectl logs -f <pod_name> -n namespace
-
-kubectl get pods -o wide
+kubectl get service
 
 kubectl get ingress
 
