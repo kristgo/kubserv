@@ -4,9 +4,13 @@ make push
 
 minikube start
 
+minikube addons enable metrics-server
+
 minikube addons enable ingress
 
 kubectl config use-context minikube
+
+make minikube
 
 kubectl get deployment
 
