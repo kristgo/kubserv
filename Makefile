@@ -1,5 +1,5 @@
 PROJECT?=github.com/kristgo/kubserv
-APP?=krist
+APP?=kubserv
 PORT?=8000
 
 RELEASE?=0.0.5
@@ -35,7 +35,7 @@ push: container
 	docker push $(CONTAINER_IMAGE):$(RELEASE)
 
 minikube: push
-	for t in $(shell find ./kubernetes/krist -type f -name "*.yaml"); do \
+	for t in $(shell find ./kubernetes/kubserv -type f -name "*.yaml"); do \
         cat $$t | \
         	gsed -E "s/\{\{(\s*)\.Release(\s*)\}\}/$(RELEASE)/g" | \
         	gsed -E "s/\{\{(\s*)\.ServiceName(\s*)\}\}/$(APP)/g"; \

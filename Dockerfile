@@ -4,6 +4,6 @@ ENV PORT 8000
 
 EXPOSE $PORT
 
-COPY krist /
+COPY kubserv /
 
-CMD ["/krist"]
+CMD ["/kubserv"]

@@ -1,5 +1,7 @@
 # Launching the service in Kubernetes
 
+dep init
+
 make push
 
 minikube start
@@ -18,6 +20,8 @@ kubectl get service
 
 kubectl get ingress
 
-echo "$(minikube ip) krist.test" | sudo tee -a /etc/hosts
+echo "$(minikube ip) kubserv.test" | sudo tee -a /etc/hosts
 
-curl -i http://krist.test/home
+curl -i http://kubserv.test/home
+
+docker image prune
