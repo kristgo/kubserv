@@ -19,13 +19,14 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		log.Fatal("Port is not set.")
+		port = "8000"
+		// log.Fatal("Port is not set.")
 	}
 
 	r := handlers.Router(version.BuildTime, version.Commit, version.Release)
 
 	interrupt := make(chan os.Signal, 1)
-	signal.Notify(interrupt, os.Interrupt, os.Kill, syscall.SIGTERM)
+	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
 
 	srv := &http.Server{
 		Addr:    ":" + port,
