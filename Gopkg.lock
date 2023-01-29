@@ -4,12 +4,12 @@
 [[projects]]
   name = "github.com/gorilla/mux"
   packages = ["."]
-  revision = "75dcda0896e109a2a22c9315bca3bb21b87b2ba5"
-  version = "v1.7.4"
+  revision = "98cb6bf42e086f6af920b965c38cacc07402d51b"
+  version = "v1.8.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "55594e596d8d916dafa26717f1bc060695a637c8e0686511b4cc775be1ac47df"
+  inputs-digest = "267589173b73dc7d113be6543cf51633ba4252c7ebc9f8f5a53b6e555802617d"
   solver-name = "gps-cdcl"
   solver-version = 1
