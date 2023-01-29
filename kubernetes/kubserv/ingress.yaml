@@ -12,7 +12,7 @@ spec:
     serviceName: {{ .ServiceName }}
     servicePort: 80
   rules:
-  - host: krist.test
+  - host: kubserv.test
     http:
       paths:
       - path: /
