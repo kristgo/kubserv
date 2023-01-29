@@ -5,7 +5,7 @@ PORT?=8000
 RELEASE?=0.0.5
 COMMIT?=$(shell git rev-parse --short HEAD)
 BUILD_TIME?=$(shell date -u '+%Y-%m-%d_%H:%M:%S')
-CONTAINER_IMAGE?=docker.io/kristgo/${APP}
+CONTAINER_IMAGE?=docker.io/${APP}
 
 GOOS?=linux
 GOARCH?=amd64
