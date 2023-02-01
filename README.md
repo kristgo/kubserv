@@ -12,7 +12,7 @@ curl -i http://127.0.0.1:8080/home
 
 dep init
 
-docker build -t kubserv:0.0.5 .
+docker build -t kubserv .
 
 make build
 
@@ -20,9 +20,15 @@ make container
 
 make push
 
-make run
+docker container run -it --name kubserv --rm -p 8080:8080 kubserv
+
+curl -i http://127.0.0.1:8080/home
 
 minikube start
+
+minikube addons enable ingress
+
+kubectl config use-context minikube
 
 kubectl apply -f tmp.yaml
 
@@ -34,15 +40,17 @@ kubectl get service
 
 kubectl get ingress
 
-traceroute -T kubserv.test -p 80
+sudo traceroute -T kubserv.test -p 80
 
 kubectl describe ingress minimal-ingress
 
 kubectl get pods --all-namespaces
 
-kubectl describe pod nginx-ingress-controller-6fc5bcc --namespace kube-system | grep Ports
+kubectl describe pod ingress-nginx-controller-77669ff58-ck8ws --namespace ingress-nginx | grep Ports
 
-kubectl port-forward nginx-ingress-controller-6fc5bcc 8080:80 --namespace kube-system
+kubectl port-forward ingress-nginx-controller-77669ff58-ck8ws 8080:80 --namespace ingress-nginx
+
+http://localhost:8080
 
 echo "$(minikube ip) kubserv.test" | sudo tee -a /etc/hosts
 
@@ -53,7 +61,3 @@ minikube stop
 minikube delete
 
 yes| docker image prune
-
-
-
-curl: (7) failed to connect to kubserv.test port 80: no route to host

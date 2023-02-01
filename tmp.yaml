@@ -5,7 +5,7 @@ metadata:
   labels:
     app: kubserv
 spec:
-  replicas: 3                    # Number of pods to run at any given time
+  replicas: 2                    # Number of pods to run at any given time
   selector:
     matchLabels:
       app: kubserv          # This deployment applies to any Pods matching the specified label
@@ -44,10 +44,8 @@ metadata:
   labels:
     app: kubserv
 spec:
-  type: ClusterIP                 # Expose the Pods by opening a port on each Node and proxing it to the service.
   ports:                         # Take incoming HTTP requests on port 9090 and forward them to the targetPort of 8080
   - protocol: TCP
-    name: http
     port: 80
     targetPort: 8080
   selector:
