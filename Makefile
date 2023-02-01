@@ -1,6 +1,6 @@
 PROJECT?=github.com/kristgo/kubserv
 APP?=kubserv
-PORT?=8000
+PORT?=8080
 
 RELEASE?=0.0.5
 COMMIT?=$(shell git rev-parse --short HEAD)

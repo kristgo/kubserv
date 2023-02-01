@@ -1,80 +1,74 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: Deployment                 # Type of Kubernetes resource
 metadata:
-  name: kubserv
+  name: kubserv             # Unique name of the Kubernetes resource
   labels:
     app: kubserv
 spec:
-  replicas: 3
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 50%
-      maxSurge: 1
-  template:
-    metadata:
-      labels:
-        app: kubserv
+  replicas: 3                    # Number of pods to run at any given time
   selector:
-    app: kubserv
+    matchLabels:
+      app: kubserv          # This deployment applies to any Pods matching the specified label
+  template:                      # This deployment will create a set of pods using the configurations in this template
+    metadata:
+      labels:                    # The labels that will be applied to all of the pods in this deployment
+        app: kubserv 
     spec:
       containers:
       - name: kubserv
-        image: docker.io/kristgo/kubserv:0.0.5
+        image: kristgo/kubserv:0.0.5 
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 8000
+          - containerPort: 8080  # Should match the port number that the Go application listens on  
         livenessProbe:
           httpGet:
             path: /healthz
-            port: 8000
+            port: 8080
         readinessProbe:
           httpGet:
             path: /readyz
-            port: 8000
+            port: 8080      
         resources:
           limits:
-            cpu: 200m
-            memory: 400Mi
+            memory: 600Mi
+            cpu: 400m
           requests:
-            cpu: 100m
             memory: 200Mi
+            cpu: 100m
       terminationGracePeriodSeconds: 30
 ---
 apiVersion: v1
-kind: Service
+kind: Service                    # Type of kubernetes resource
 metadata:
-  name: kubserv
+  name: kubserv     # Unique name of the resource
   labels:
     app: kubserv
 spec:
-  ports:
-  - port: 80
-    targetPort: 8000
-    protocol: TCP
+  type: ClusterIP                 # Expose the Pods by opening a port on each Node and proxing it to the service.
+  ports:                         # Take incoming HTTP requests on port 9090 and forward them to the targetPort of 8080
+  - protocol: TCP
     name: http
+    port: 80
+    targetPort: 8080
   selector:
-    app: kubserv
+    app: kubserv            # Map any pod with label `app=go-redis-app` to this service
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  name: minimal-ingress
   annotations:
-    kubernetes.io/ingress.class: nginx
-    ingress.kubernetes.io/rewrite-target: /
-  labels:
-    app: kubserv
-  name: kubserv
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  backend:
-    serviceName: kubserv
-    servicePort: 80
+  ingressClassName: nginx-example
   rules:
   - host: kubserv.test
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: kubserv
-          servicePort: 80
----
+          service:
+            name: kubserv
+            port:
+              number: 80
