@@ -1,4 +1,62 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubserv
+  labels:
+    app: kubserv
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: kubserv
+  selector:
+    app: kubserv
+    spec:
+      containers:
+      - name: kubserv
+        image: docker.io/kristgo/kubserv:0.0.5
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8000
+        resources:
+          limits:
+            cpu: 200m
+            memory: 400Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+      terminationGracePeriodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubserv
+  labels:
+    app: kubserv
+spec:
+  ports:
+  - port: 80
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: kubserv
+---
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
@@ -19,60 +77,4 @@ spec:
         backend:
           serviceName: kubserv
           servicePort: 80
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: kubserv
-  labels:
-    app: kubserv
-spec:
-  replicas: 3
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 50%
-      maxSurge: 1
-  template:
-    metadata:
-      labels:
-        app: kubserv
-    spec:
-      containers:
-      - name: kubserv
-        image: docker.io/kristgo/kubserv:0.0.5
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 8000
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 8000
-        readinessProbe:
-          httpGet:
-            path: /readyz
-            port: 8000
-        resources:
-          limits:
-            cpu: 10m
-            memory: 30Mi
-          requests:
-            cpu: 10m
-            memory: 30Mi
-      terminationGracePeriodSeconds: 30
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: kubserv
-  labels:
-    app: kubserv
-spec:
-  ports:
-  - port: 80
-    targetPort: 8000
-    protocol: TCP
-    name: http
-  selector:
-    app: kubserv
 ---

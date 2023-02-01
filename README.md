@@ -6,6 +6,8 @@ make push
 
 minikube start
 
+kubectl apply -f tmp.yaml
+
 minikube addons enable metrics-server
 
 minikube addons enable ingress

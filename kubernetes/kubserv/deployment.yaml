@@ -1,11 +1,11 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .ServiceName }}
   labels:
     app: {{ .ServiceName }}
 spec:
-  replicas: 3
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -15,11 +15,13 @@ spec:
     metadata:
       labels:
         app: {{ .ServiceName }}
+  selector:
+    app: {{ .ServiceName }}
     spec:
       containers:
       - name: {{ .ServiceName }}
         image: docker.io/kristgo/{{ .ServiceName }}:{{ .Release }}
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
         livenessProbe:
@@ -32,9 +34,9 @@ spec:
             port: 8000
         resources:
           limits:
-            cpu: 10m
-            memory: 30Mi
+            cpu: 200m
+            memory: 400Mi
           requests:
-            cpu: 10m
-            memory: 30Mi
+            cpu: 100m
+            memory: 200Mi
       terminationGracePeriodSeconds: 30
