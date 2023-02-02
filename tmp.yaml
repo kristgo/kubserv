@@ -60,7 +60,6 @@ metadata:
     ingressclass.kubernetes.io/is-default-class: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  # ingressClassName: nginx
   rules:
   - host: kubserv.test
     http:

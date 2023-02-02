@@ -3,19 +3,17 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
+    ingressclass.kubernetes.io/is-default-class: "true"
     ingress.kubernetes.io/rewrite-target: /
-  labels:
-    app: {{ .ServiceName }}
-  name: {{ .ServiceName }}
 spec:
-  backend:
-    serviceName: {{ .ServiceName }}
-    servicePort: 80
   rules:
   - host: kubserv.test
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: {{ .ServiceName }}
-          servicePort: 80
+          service:
+            name: {{ .ServiceName }}
+            port:
+              number: 80
