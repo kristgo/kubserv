@@ -28,8 +28,6 @@ minikube start
 
 minikube addons enable ingress
 
-kubectl config use-context minikube
-
 kubectl apply -f tmp.yaml
 
 kubectl get pods
@@ -46,6 +44,8 @@ kubectl describe ingress minimal-ingress
 
 kubectl get pods --all-namespaces
 
+kubectl -n ingress-nginx logs ingress-nginx-controller-77669ff58-grhzh
+
 kubectl describe pod ingress-nginx-controller-77669ff58-ck8ws --namespace ingress-nginx | grep Ports
 
 kubectl port-forward ingress-nginx-controller-77669ff58-ck8ws 8080:80 --namespace ingress-nginx
@@ -61,3 +61,4 @@ minikube stop
 minikube delete
 
 yes| docker image prune
+
