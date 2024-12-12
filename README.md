@@ -1,4 +1,4 @@
-# New cars in Russia in 2020 with Ingress in Kubernetes
+# New cars in Russia in 2020
 
 docker build -t kubserv .
 
