@@ -1,4 +1,4 @@
-# Go web app with Ingress in Kubernetes
+# New cars in Russia in 2020 with Ingress in Kubernetes
 
 docker build -t kubserv .
 
